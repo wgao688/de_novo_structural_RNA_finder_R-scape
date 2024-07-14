@@ -10,9 +10,6 @@ Our method uses the evidence signature of compensatory base pairs to detect evid
 
 ### Tutorial
 
-Discovery of 17 conserved structural RNAs in fungi
-William Gao, Thomas A. Jones, and Elena Rivas
-
 #### Step 1: Install software programs
 
 ##### 1) Install nhmmer, which is included in the HMMER software package. The version used in the paper is **v3.2.1**. Download the tar archive from http://hmmer.org/
@@ -55,14 +52,14 @@ To demonstrate usage of the flanked and unflanked mode scripts, a tutorial with 
 
 As described in the paper section titled "Method to identify conserved RNA structures" there are two modes of our structural RNA discovery method. 
 
-#### 1) Unflanked mode (for standalone ncRNA genes):
+##### 1) Unflanked mode (for standalone ncRNA genes):
 
 The unflanked mode is used to screen intergenic regions (IGRs) to discover standalone structural non-coding RNA genes. The unflanked mode requires two arguments, in this order. 
 
-1. $1:	The first argument is a sequence in FASTA format that you wish to run the method on. 
-2. $2:	The second argument is the multi-sequence FASTA file that you wish to screen the query sequence against for homologs (e.g. a genome database).
+1. `$1`:	The first argument is a sequence in FASTA format that you wish to run the method on. 
+2. `$2`:	The second argument is the multi-sequence FASTA file that you wish to screen the query sequence against for homologs (e.g. a genome database).
 
-In the tutorial, a sample IGR region in the Saccharomyces cerevisiae genome is provided. The tutorial uses a small database of 10 Saccharomyces genomes downloaded from NCBI Genbank. Information about the genomes included is available in tutorial/genome_db/genomes_included_in_db.txt. Given the size of this dataset, first download the directory with chunks of the 10 genomes from `method_scripts/tutorial/genome_db/separate_fasta_files/`. Then, with the files in that directory, perform ```cat *.fa > Saccharomyces_genomes.fa```. `Saccharomyces_genomes.fa` will be the file used as the database against which the query sequences from S. cerevisiae will be searched against for homologous sequences. 
+In the tutorial, a sample IGR region in the Saccharomyces cerevisiae genome is provided. The tutorial uses a small database of 10 Saccharomyces genomes downloaded from NCBI Genbank. Information about the genomes included is available in `tutorial/genome_db/genomes_included_in_db.txt`. Given the size of this dataset, first download the directory with chunks of the 10 genomes from `method_scripts/tutorial/genome_db/separate_fasta_files/`. Then, with the files in that directory, perform ```cat *.fa > Saccharomyces_genomes.fa```. `Saccharomyces_genomes.fa` will be the file used as the database against which the query sequences from S. cerevisiae will be searched against for homologous sequences. 
 
 Using these two arguments, the unflanked mode script can be run as follows: 
 
@@ -78,11 +75,11 @@ The flanked mode is used to screen introns and untranslated regions (UTRs) to di
 
 ```bash flanked_mode.sh <query hmmfile|alignfile|seqfile> <target seqfile (e.g. genome database)> <genome unique string> <noncoding threshold>```
 
-1. $1:	The first argument is a sequence in FASTA format that you wish to run the method on. This sequence should contain non-coding sequence flanked by some amount of protein-coding sequence, since the flanked mode uses the protein-coding sequence to aid homology search in the first nhmmer search. The description field of the FASTA sequence must have its 4th and 5th fields indicate which nucleotides in the sequence correspond to the non-coding region. For example, one of the tutorial files has the following descriptor line: **IGR_plus_YAR015W_flank chrI 168872-170295 1 503 Saccharomyces cerevisiae S288C**: "IGR_plus_YAR015W_flank" refers to the sequence name, "chrI 168872-170295" gives the genomic location of the full sequence. "1" and "503" indicates that nucleotides 1-503 in this sequence correspond to the non-coding region (i.e. the IGR), while nucleotides 503 to the end (1424) corresponds to the protein-coding flank (i.e. the coding sequence of YAR015W).
-2. $2:	The second argument is the multi-sequence FASTA file that you wish to screen the query sequence against for 
+1. `$1`:	The first argument is a sequence in FASTA format that you wish to run the method on. This sequence should contain non-coding sequence flanked by some amount of protein-coding sequence, since the flanked mode uses the protein-coding sequence to aid homology search in the first nhmmer search. The description field of the FASTA sequence must have its 4th and 5th fields indicate which nucleotides in the sequence correspond to the non-coding region. For example, one of the tutorial files has the following descriptor line: **IGR_plus_YAR015W_flank chrI 168872-170295 1 503 Saccharomyces cerevisiae S288C**: "IGR_plus_YAR015W_flank" refers to the sequence name, "chrI 168872-170295" gives the genomic location of the full sequence. "1" and "503" indicates that nucleotides 1-503 in this sequence correspond to the non-coding region (i.e. the IGR), while nucleotides 503 to the end (1424) corresponds to the protein-coding flank (i.e. the coding sequence of YAR015W).
+2. `$2`:	The second argument is the multi-sequence FASTA file that you wish to screen the query sequence against for 
 	homologs (e.g. a genome database). 
-3. $3:	The third argument is a genome-unique string. The script `subscripts/bp_col.sh` uses this to identify the columns of the flanked alignment from the first nhmmer search to extract the coordinates corresponding to only the non-coding region. It must be a string that is unique to the genome of the query sequence, and present in the description fields of that genome in the database (For this reason, we recommend that you include an example copy of the genome for which you are using as a query. For example, in the tutorial genome_db, we wish to extract the columns of the multi-sequence alignment corresponding to nucleotides 1 to 503 of the S. cerevisiae sequence. One such unique string to do this would be "S288C". 
-4. $4:	The fourth argument is the number of nucleotides that you require the non-coding region to contain after the flanked alignment. The threshold we used is 50, meaning that once you extract the non-coding region, only sequences with at least 50 nucleotides in this region will be kept to build a HMM. This HMM is then the query for three more iterative homology searches. 
+3. `$3`:	The third argument is a genome-unique string. The script `subscripts/bp_col.sh` uses this to identify the columns of the flanked alignment from the first nhmmer search to extract the coordinates corresponding to only the non-coding region. It must be a string that is unique to the genome of the query sequence, and present in the description fields of that genome in the database (For this reason, we recommend that you include an example copy of the genome for which you are using as a query. For example, in the tutorial genome_db, we wish to extract the columns of the multi-sequence alignment corresponding to nucleotides 1 to 503 of the S. cerevisiae sequence. One such unique string to do this would be "S288C". 
+4. `$4`:	The fourth argument is the number of nucleotides that you require the non-coding region to contain after the flanked alignment. The threshold we used is 50, meaning that once you extract the non-coding region, only sequences with at least 50 nucleotides in this region will be kept to build a HMM. This HMM is then the query for three more iterative homology searches. 
 
 In the tutorial, there are two flanked query sequences provided. They contain the same IGR as in the unflanked mode, flanked by the upstream and downstream protein-coding sequences. Because the official S. cerevisiae S288C genome annotation annotates protein-coding genes based only on their CDSes and does not annotate UTRs, the "IGRs" likely contain true intergenic region, along with the UTRs of the two protein-coding genes. In both alignments here, the entire IGR is treated as if it could potentially be the UTR of each gene, since it is only 503 nt. For much longer IGRs, it is reasonable to only include intergenic sequences some distance away from the CDS (e.g. 2000 nt). 
 
@@ -98,9 +95,9 @@ If you wish to keep only the top hit per genome in any alignment, you can use ke
 
 ```bash keep_top_genome_hit_only.sh <alignment> <outfile name> <genome accession key>```
 
-1. $1: The first argument is the alignment for which you want to keep only the top hit per genome.
-2. $2: The second argument is the name of the outputted alignment. It will be produced in the same directory as the first argument.
-3. $3: The third argument is a two-field file, with the first field corresponding to the accessions and the second field corresponding to the genome. We recommend that you create this file when concatenating individual genome files into our multiple genome database. An example for the tutorial genome database is found here: tutorial/genome_db/genome_accession_key.txt
+1. `$1`: The first argument is the alignment for which you want to keep only the top hit per genome.
+2. `$2`: The second argument is the name of the outputted alignment. It will be produced in the same directory as the first argument.
+3. `$3`: The third argument is a two-field file, with the first field corresponding to the accessions and the second field corresponding to the genome. We recommend that you create this file when concatenating individual genome files into our multiple genome database. An example for the tutorial genome database is found here: tutorial/genome_db/genome_accession_key.txt
 
 Once you have finished running the unflanked mode on tutorial/IGR_only.fasta, you should have a directory tutorial/IGR_only with the final nhmmer alignment called v3.sto. To keep only the top hit per genome, run:
 
@@ -120,6 +117,6 @@ Once you have produced the alignments, you can run R-scape as follows:
 
 The `--fold` flag is used because nhmmer alignments do not have a secondary structure prediction. Use `R-scape -s --fold` if you are running an alignment with a SS_cons line that contains the secondary structure annotation. Use `--outdir` if you want to specify a directory for the `R-scape` output. For more information on the flags that can be used, run `R-scape -h`.
 
-#### Question about the paper or tutorial
+### Questions about the paper or tutorial
 
 Please correspond with questions about the tutorial to William Gao (williamgao98@gmail.com). For questions regarding the manuscript, please reach out to William Gao (williamgao98@gmail.com) or Elena Rivas (elenarivas@fas.harvard.edu).
