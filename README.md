@@ -59,7 +59,9 @@ The unflanked mode is used to screen intergenic regions (IGRs) to discover stand
 1. `$1`:	The first argument is a sequence in FASTA format that you wish to run the method on. 
 2. `$2`:	The second argument is the multi-sequence FASTA file that you wish to screen the query sequence against for homologs (e.g. a genome database).
 
-In the tutorial, a sample IGR region in the Saccharomyces cerevisiae genome is provided. The tutorial uses a small database of 10 Saccharomyces genomes downloaded from NCBI Genbank. Information about the genomes included is available in `tutorial/genome_db/genomes_included_in_db.txt`. Given the size of this dataset, first download the directory with chunks of the 10 genomes from `method_scripts/tutorial/genome_db/separate_fasta_files/`. Then, with the files in that directory, perform ```cat *.fa > Saccharomyces_genomes.fa```. `Saccharomyces_genomes.fa` will be the file used as the database against which the query sequences from S. cerevisiae will be searched against for homologous sequences. 
+In the tutorial, a sample IGR region in the Saccharomyces cerevisiae genome is provided. The tutorial uses a small database of 10 Saccharomyces genomes downloaded from NCBI Genbank. Information about the genomes included is available in `tutorial/genome_db/genomes_included_in_db.txt`. **Given the size of this dataset, first download the directory with chunks of the 10 genomes from `method_scripts/tutorial/genome_db/separate_fasta_files/`.**
+
+Then, with the files in that directory, perform ```cat *.fa > Saccharomyces_genomes.fa```. `Saccharomyces_genomes.fa` will be the file used as the database against which the query sequences from S. cerevisiae will be searched against for homologous sequences. 
 
 Using these two arguments, the unflanked mode script can be run as follows: 
 
@@ -88,10 +90,14 @@ Using these four arguments, the flanked mode script can be run as follows:
 ```bash flanked_mode.sh tutorial/YAR015W_plus_IGR.fasta tutorial/genome_db/Saccharomyces_genomes.fa	S288C	50```
 
 The flanked mode script produces the following:
-1. A directory with the basename of the query sequence, in the same directory as the query sequence. The directory contains the following files: flanked.sto, flanked.hmmout: The files produced for the flanked search. noncoding.sto: Only the non-coding region of flanked.sto. trim_noncoding.sto: Removes sequences from noncoding.sto that have fewer than the threshold specified ($4). 1_trim.sto, 1_trim.hmmout, 2_trim.sto, 2_trim.hmmout, 3_trim.sto, 3_trim.hmmout: The alignments and tab-delimited result files produced for the first, second, and third iterations of nhmmer on the HMM produced from trim_noncoding.sto. 
+- A directory with the basename of the query sequence, in the same directory as the query sequence.
+- The directory contains the following files:
+- flanked.sto, flanked.hmmout: The files produced for the flanked search. noncoding.sto: Only the non-coding region of flanked.sto.
+- trim_noncoding.sto: Removes sequences from noncoding.sto that have fewer than the threshold specified ($4).
+- 1_trim.sto, 1_trim.hmmout, 2_trim.sto, 2_trim.hmmout, 3_trim.sto, 3_trim.hmmout: The alignments and tab-delimited result files produced for the first, second, and third iterations of nhmmer on the HMM produced from trim_noncoding.sto. 
 
 #### Step 4 (optional): Keeping only the top hit per genome
-If you wish to keep only the top hit per genome in any alignment, you can use keep_top_genome_hit_only.sh. This can be important if an RNA has multiple copies in some genomes, some of which may be pseudogenes that can weaken the covariation signal. This script uses  esl-alimanip, so edit the path to your executable near the top of the script. This script requires three arguments. 
+If you wish to keep only the top hit per genome in any alignment, you can use `keep_top_genome_hit_only.sh`. This can be important if an RNA has multiple copies in some genomes, some of which may be pseudogenes that can weaken the covariation signal. This script uses `esl-alimanip`, so edit the path to your executable near the top of the script. This script requires three arguments. 
 
 ```bash keep_top_genome_hit_only.sh <alignment> <outfile name> <genome accession key>```
 
@@ -109,7 +115,7 @@ Once you have finished running the flanked mode on tutorial/YAR014C_plus_IGR.fas
 
 ```bash keep_top_genome_hit_only.sh tutorial/YAR015W_plus_IGR/3_trim_noncoding.sto rm_v3.sto tutorial/genome_db/genome_accession_key.txt```
 
-These scripts will produce a file called "rm_v3.sto" in the same directory as the alignments, with only the top hit per genome included. 
+These scripts will produce a file called rm_v3.sto in the same directory as the alignments, with only the top hit per genome included. 
 
 #### Step 5: Run R-scape on the final alignment
 Once you have produced the alignments, you can run R-scape as follows:
