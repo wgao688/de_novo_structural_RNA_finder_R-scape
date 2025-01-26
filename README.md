@@ -122,7 +122,3 @@ Once you have produced the alignments, you can run R-scape as follows:
 ```R-scape --fold <alignment>```
 
 The `--fold` flag is used because nhmmer alignments do not have a secondary structure prediction. Use `R-scape -s --fold` if you are running an alignment with a SS_cons line that contains the secondary structure annotation. Use `--outdir` if you want to specify a directory for the `R-scape` output. For more information on the flags that can be used, run `R-scape -h`.
-
-### Questions about the paper or tutorial
-
-Please correspond with questions about the tutorial to William Gao (williamgao98@gmail.com). For questions regarding the manuscript, please reach out to William Gao (williamgao98@gmail.com) or Elena Rivas (elenarivas@fas.harvard.edu).
